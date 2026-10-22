@@ -2,13 +2,15 @@ import '../models/product_model.dart';
 import '../providers/api_provider.dart';
 
 class CatalogRepository {
-  CatalogRepository({CatalogProvider? provider}) : _provider = provider ?? CatalogProvider();
+  CatalogRepository({CatalogProvider? provider})
+      : _provider = provider ?? CatalogProvider();
 
   final CatalogProvider _provider;
 
   Future<HomeModel> home() async {
     final res = await _provider.home();
-    return HomeModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return HomeModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<List<CategoryModel>> categories() async {
@@ -35,7 +37,8 @@ class CatalogRepository {
 
   Future<ProductModel> product(String key) async {
     final res = await _provider.product(key);
-    return ProductModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return ProductModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<List<ProductModel>> related(String key) async {

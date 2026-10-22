@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/base/base_controller.dart';
-import '../../../../core/routes/app_routes.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/utils/app_snackbar.dart';
@@ -25,7 +25,8 @@ class LoginController extends BaseController {
           identifierController.text.trim(), passwordController.text));
       await Get.find<NotificationService>().load();
       AppSnackbar.success('ຍິນດີຕ້ອນຮັບ ${_auth.user?.name ?? ''}');
-      Get.offAllNamed(AppRoutes.main);
+      // The account location now swaps the login view for the profile view.
+      AppNavigator.openAccount();
     } catch (_) {
       AppSnackbar.error(error.value ?? 'ເຂົ້າສູ່ລະບົບບໍ່ສຳເລັດ');
     }

@@ -7,14 +7,9 @@ import '../../../core/routes/app_routes.dart';
 import '../../categories/views/categories_view.dart';
 import '../../chat/views/chat_view.dart';
 import '../../orders/list/views/orders_view.dart';
-import '../../profile/main/views/profile_view.dart';
+import '../../profile/main/views/account_view.dart';
+import '../controllers/main_controller.dart';
 import 'home_view.dart';
-
-class MainController extends GetxController {
-  final RxInt index = 0.obs;
-
-  void change(int value) => index.value = value;
-}
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -29,10 +24,18 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     super.initState();
-    controller = Get.put(MainController(), permanent: true);
+    controller = Get.isRegistered<MainController>()
+        ? Get.find<MainController>()
+        : Get.put(MainController(), permanent: true);
   }
 
-  final _pages = const [HomeView(), CategoriesView(), OrdersView(), ChatView(), ProfileView()];
+  final _pages = const [
+    HomeView(),
+    CategoriesView(),
+    OrdersView(),
+    ChatView(),
+    AccountView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +48,17 @@ class _MainViewState extends State<MainView> {
                 onPressed: () => Get.toNamed(AppRoutes.cart),
                 backgroundColor: AppColors.primary,
                 elevation: 4,
-                child: Icon(Icons.shopping_bag_outlined, color: Colors.white, size: 24.r),
+                child: Icon(Icons.shopping_bag_outlined,
+                    color: Colors.white, size: 24.r),
               ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: .06), blurRadius: 20, offset: const Offset(0, -6)),
+              BoxShadow(
+                  color: Colors.black.withValues(alpha: .06),
+                  blurRadius: 20,
+                  offset: const Offset(0, -6)),
             ],
           ),
           child: SafeArea(
@@ -70,15 +77,20 @@ class _MainViewState extends State<MainView> {
                           Icon(
                             selected ? _items[i].activeIcon : _items[i].icon,
                             size: 22.r,
-                            color: selected ? AppColors.primary : AppColors.textHint,
+                            color: selected
+                                ? AppColors.primary
+                                : AppColors.textHint,
                           ),
                           SizedBox(height: 3.h),
                           Text(
                             _items[i].label,
                             style: TextStyle(
                               fontSize: 9.5.sp,
-                              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                              color: selected ? AppColors.primary : AppColors.textHint,
+                              fontWeight:
+                                  selected ? FontWeight.w700 : FontWeight.w500,
+                              color: selected
+                                  ? AppColors.primary
+                                  : AppColors.textHint,
                             ),
                           ),
                         ],
@@ -95,16 +107,32 @@ class _MainViewState extends State<MainView> {
   }
 
   List<_NavItem> get _items => const [
-        _NavItem(label: 'ໜ້າຫຼັກ', icon: Icons.home_outlined, activeIcon: Icons.home_rounded),
-        _NavItem(label: 'ໝວດໝູ່', icon: Icons.grid_view_outlined, activeIcon: Icons.grid_view_rounded),
-        _NavItem(label: 'ຄຳສັ່ງຊື້', icon: Icons.receipt_long_outlined, activeIcon: Icons.receipt_long_rounded),
-        _NavItem(label: 'ແຊັດ', icon: Icons.chat_bubble_outline_rounded, activeIcon: Icons.chat_bubble_rounded),
-        _NavItem(label: 'ໂປຣໄຟລ໌', icon: Icons.person_outline_rounded, activeIcon: Icons.person_rounded),
+        _NavItem(
+            label: 'ໜ້າຫຼັກ',
+            icon: Icons.home_outlined,
+            activeIcon: Icons.home_rounded),
+        _NavItem(
+            label: 'ໝວດໝູ່',
+            icon: Icons.grid_view_outlined,
+            activeIcon: Icons.grid_view_rounded),
+        _NavItem(
+            label: 'ຄຳສັ່ງຊື້',
+            icon: Icons.receipt_long_outlined,
+            activeIcon: Icons.receipt_long_rounded),
+        _NavItem(
+            label: 'ແຊັດ',
+            icon: Icons.chat_bubble_outline_rounded,
+            activeIcon: Icons.chat_bubble_rounded),
+        _NavItem(
+            label: 'ໂປຣໄຟລ໌',
+            icon: Icons.person_outline_rounded,
+            activeIcon: Icons.person_rounded),
       ];
 }
 
 class _NavItem {
-  const _NavItem({required this.label, required this.icon, required this.activeIcon});
+  const _NavItem(
+      {required this.label, required this.icon, required this.activeIcon});
 
   final String label;
   final IconData icon;

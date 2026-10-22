@@ -2,13 +2,15 @@ import '../models/chat_model.dart';
 import '../providers/api_provider.dart';
 
 class ChatRepository {
-  ChatRepository({ChatProvider? provider}) : _provider = provider ?? ChatProvider();
+  ChatRepository({ChatProvider? provider})
+      : _provider = provider ?? ChatProvider();
 
   final ChatProvider _provider;
 
   Future<ChatConversationModel> conversation() async {
     final res = await _provider.conversation();
-    return ChatConversationModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return ChatConversationModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<List<ChatMessageModel>> messages() async {
@@ -18,7 +20,8 @@ class ChatRepository {
 
   Future<ChatMessageModel> send(String body) async {
     final res = await _provider.send(body);
-    return ChatMessageModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return ChatMessageModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<List<NotificationModel>> notifications() async {

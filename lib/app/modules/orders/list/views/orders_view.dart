@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
-import '../../../../core/routes/app_routes.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/app_bar_widget.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -31,7 +31,7 @@ class OrdersView extends GetView<OrdersController> {
             action: AppButton(
                 label: 'ເຂົ້າສູ່ລະບົບ',
                 expanded: false,
-                onPressed: () => Get.toNamed(AppRoutes.login)),
+                onPressed: AppNavigator.openAccount),
           );
         }
 

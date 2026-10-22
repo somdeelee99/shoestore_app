@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../../core/base/base_controller.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/utils/app_snackbar.dart';
 import '../../../../data/models/product_model.dart';
@@ -22,11 +23,15 @@ class ProductDetailController extends BaseController {
   final RxBool favorite = false.obs;
   final RxInt tabIndex = 0.obs;
 
-  String get productId => Get.arguments is String ? Get.arguments as String : (Get.arguments?['id'] as String? ?? '');
+  String get productId => Get.arguments is String
+      ? Get.arguments as String
+      : (Get.arguments?['id'] as String? ?? '');
 
   int get maxQuantity => (variant.value?.stock ?? 0).clamp(1, 20);
 
-  bool get canBuy => product.value != null && (product.value!.variants.isEmpty || variant.value != null);
+  bool get canBuy =>
+      product.value != null &&
+      (product.value!.variants.isEmpty || variant.value != null);
 
   @override
   void onInit() {
@@ -40,7 +45,8 @@ class ProductDetailController extends BaseController {
         final detail = await _catalog.product(productId);
         product.value = detail;
         if (detail.sizes.isNotEmpty) selectedSize.value = detail.sizes.first;
-        if (detail.colors.isNotEmpty) selectedColor.value = detail.colors.first.name;
+        if (detail.colors.isNotEmpty)
+          selectedColor.value = detail.colors.first.name;
         _syncVariant();
         related.assignAll(await _catalog.related(productId));
         favorite.value = await _isFavorite();
@@ -75,35 +81,36 @@ class ProductDetailController extends BaseController {
       return;
     }
     final match = p.variants.where(
-      (v) => v.size == selectedSize.value && (selectedColor.value.isEmpty || v.color == selectedColor.value),
+      (v) =>
+          v.size == selectedSize.value &&
+          (selectedColor.value.isEmpty || v.color == selectedColor.value),
     );
-    variant.value = match.isNotEmpty ? match.first : p.variants.firstWhereOrNull((v) => v.size == selectedSize.value);
+    variant.value = match.isNotEmpty
+        ? match.first
+        : p.variants.firstWhereOrNull((v) => v.size == selectedSize.value);
     if (quantity.value > maxQuantity) quantity.value = maxQuantity;
   }
 
   bool isSizeAvailable(String size) =>
-      product.value?.variants.any((v) => v.size == size && v.stock > 0) ?? false;
+      product.value?.variants.any((v) => v.size == size && v.stock > 0) ??
+      false;
 
   void setQuantity(int value) => quantity.value = value.clamp(1, maxQuantity);
 
   Future<void> toggleFavorite() async {
-    if (!Get.find<CartController>().isLoggedIn) {
-      Get.toNamed(AppRoutes.login);
-      return;
-    }
+    if (!AppNavigator.requireLogin()) return;
     try {
       favorite.value = await _shop.toggleWishlist(productId);
-      AppSnackbar.success(favorite.value ? 'ເພີ່ມໃນລາຍການທີ່ມັກແລ້ວ' : 'ລຶບອອກຈາກລາຍການທີ່ມັກ');
+      AppSnackbar.success(
+          favorite.value ? 'ເພີ່ມໃນລາຍການທີ່ມັກແລ້ວ' : 'ລຶບອອກຈາກລາຍການທີ່ມັກ');
     } catch (_) {
       AppSnackbar.error('ບໍ່ສຳເລັດ ກະລຸນາລອງໃໝ່');
     }
   }
 
   Future<bool> addToCart({bool silent = false}) async {
-    if (!Get.find<CartController>().isLoggedIn) {
-      Get.toNamed(AppRoutes.login);
-      return false;
-    }
+    // Product details stay public. Only ordering (cart / buy now) needs auth.
+    if (!AppNavigator.requireLogin()) return false;
     if (!canBuy) {
       AppSnackbar.error('ກະລຸນາເລືອກຂະໜາດ ແລະ ສີກ່ອນ');
       return false;
@@ -124,10 +131,12 @@ class ProductDetailController extends BaseController {
   }
 
   Future<void> buyNow() async {
+    if (!AppNavigator.requireLogin()) return;
     final ok = await addToCart(silent: true);
     if (!ok) return;
     Get.toNamed(AppRoutes.cart);
   }
 
-  void openProduct(ProductModel model) => Get.offNamed(AppRoutes.productDetail, arguments: model.id);
+  void openProduct(ProductModel model) =>
+      Get.offNamed(AppRoutes.productDetail, arguments: model.id);
 }

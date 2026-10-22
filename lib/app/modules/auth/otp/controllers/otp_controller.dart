@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/base/base_controller.dart';
-import '../../../../core/routes/app_routes.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/utils/app_snackbar.dart';
@@ -47,7 +47,8 @@ class OtpController extends BaseController {
       return;
     }
     try {
-      final dev = await guard(() => _auth.requestOtp(phoneController.text.trim()));
+      final dev =
+          await guard(() => _auth.requestOtp(phoneController.text.trim()));
       sent.value = true;
       devCode.value = dev ?? '';
       _startTimer();
@@ -62,10 +63,11 @@ class OtpController extends BaseController {
   Future<void> verify(String value) async {
     if (value.length < 6) return;
     try {
-      final ok = await guard(() => _auth.verifyOtp(phone: phoneController.text.trim(), code: value));
+      final ok = await guard(() =>
+          _auth.verifyOtp(phone: phoneController.text.trim(), code: value));
       if (ok == true) {
         await Get.find<NotificationService>().load();
-        Get.offAllNamed(AppRoutes.main);
+        AppNavigator.openAccount();
       }
     } catch (_) {
       AppSnackbar.error(error.value ?? 'ລະຫັດ OTP ບໍ່ຖືກຕ້ອງ');

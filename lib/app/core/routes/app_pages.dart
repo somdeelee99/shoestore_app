@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
 import '../../modules/auth/login/bindings/login_binding.dart';
-import '../../modules/auth/login/views/login_view.dart';
 import '../../modules/auth/otp/bindings/otp_binding.dart';
 import '../../modules/auth/otp/views/otp_view.dart';
 import '../../modules/auth/register/bindings/register_binding.dart';
@@ -46,7 +45,7 @@ import '../../modules/profile/coupons/views/coupons_view.dart';
 import '../../modules/profile/edit/bindings/edit_profile_binding.dart';
 import '../../modules/profile/edit/views/edit_profile_view.dart';
 import '../../modules/profile/main/bindings/profile_binding.dart';
-import '../../modules/profile/main/views/profile_view.dart';
+import '../../modules/profile/main/views/account_view.dart';
 import '../../modules/profile/settings/bindings/settings_binding.dart';
 import '../../modules/profile/settings/views/settings_view.dart';
 import '../../modules/profile/wishlist/bindings/wishlist_binding.dart';
@@ -69,9 +68,10 @@ class AppPages {
         binding: OnboardingBinding()),
 
     // auth
+    // Login and profile intentionally share one location.
     GetPage(
         name: AppRoutes.login,
-        page: () => const LoginView(),
+        page: () => const AccountView(),
         binding: LoginBinding()),
     GetPage(
         name: AppRoutes.register,
@@ -143,7 +143,7 @@ class AppPages {
     // account
     GetPage(
         name: AppRoutes.profile,
-        page: () => const ProfileView(),
+        page: () => const AccountView(),
         binding: ProfileBinding()),
     GetPage(
         name: AppRoutes.editProfile,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/base/base_controller.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/services/checkout_service.dart';
 import '../../../../core/utils/app_snackbar.dart';
@@ -41,6 +42,8 @@ class OrderReviewController extends BaseController {
   }
 
   Future<void> placeOrder() async {
+    // Final auth guard: placing an order always requires an account.
+    if (!AppNavigator.requireLogin()) return;
     if (checkout.address.value == null) {
       Get.toNamed(AppRoutes.checkoutAddress);
       return;
@@ -55,7 +58,9 @@ class OrderReviewController extends BaseController {
             paymentMethod: checkout.paymentMethod.value,
             shippingMethod: checkout.shippingMethod.value,
             couponCode: checkout.couponCode.value,
-            note: noteController.text.trim().isEmpty ? null : noteController.text.trim(),
+            note: noteController.text.trim().isEmpty
+                ? null
+                : noteController.text.trim(),
           ));
       if (order == null) return;
       placedOrder.value = order;

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:shoestore_app/app/data/repositories/chat_repository.dart';
 import 'package:shoestore_app/app/data/repositories/shop_repository.dart';
+import 'package:shoestore_app/app/modules/auth/login/controllers/login_controller.dart';
 import 'package:shoestore_app/app/modules/categories/controllers/categories_controller.dart';
 
 import 'package:shoestore_app/app/modules/chat/controllers/chat_controller.dart';
@@ -17,6 +18,11 @@ class AppBinding extends Bindings {
 
     Get.lazyPut<ChatController>(
       () => ChatController(),
+      fenix: true,
+    );
+
+    Get.lazyPut<LoginController>(
+      () => LoginController(),
       fenix: true,
     );
 

@@ -20,22 +20,28 @@ class ShopRepository {
 
   Future<CartModel> cart() async {
     final res = await _cart.cart();
-    return CartModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return CartModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
-  Future<CartModel> addToCart({required String productId, String? variantId, int quantity = 1}) async {
-    final res = await _cart.add(productId: productId, variantId: variantId, quantity: quantity);
-    return CartModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+  Future<CartModel> addToCart(
+      {required String productId, String? variantId, int quantity = 1}) async {
+    final res = await _cart.add(
+        productId: productId, variantId: variantId, quantity: quantity);
+    return CartModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<CartModel> updateCartItem(String itemId, int quantity) async {
     final res = await _cart.update(itemId, quantity);
-    return CartModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return CartModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<CartModel> removeCartItem(String itemId) async {
     final res = await _cart.remove(itemId);
-    return CartModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return CartModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<void> clearCart() => _cart.clear();
@@ -63,12 +69,15 @@ class ShopRepository {
 
   Future<AddressModel> createAddress(Map<String, dynamic> body) async {
     final res = await _profile.createAddress(body);
-    return AddressModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return AddressModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
-  Future<AddressModel> updateAddress(String id, Map<String, dynamic> body) async {
+  Future<AddressModel> updateAddress(
+      String id, Map<String, dynamic> body) async {
     final res = await _profile.updateAddress(id, body);
-    return AddressModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return AddressModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<void> deleteAddress(String id) => _profile.deleteAddress(id);
@@ -97,7 +106,8 @@ class ShopRepository {
       if (couponCode != null && couponCode.isNotEmpty) 'couponCode': couponCode,
       if (note != null && note.isNotEmpty) 'note': note,
     });
-    return OrderModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return OrderModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<List<OrderModel>> myOrders({String? status, int page = 1}) async {
@@ -107,12 +117,14 @@ class ShopRepository {
 
   Future<OrderModel> orderDetail(String id) async {
     final res = await _orders.detail(id);
-    return OrderModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return OrderModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<TrackingModel> tracking(String id) async {
     final res = await _orders.tracking(id);
-    return TrackingModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return TrackingModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<void> cancelOrder(String id) => _orders.cancel(id);
@@ -121,7 +133,8 @@ class ShopRepository {
 
   Future<CheckoutOptionsModel> checkoutOptions() async {
     final res = await _orders.checkoutOptions();
-    return CheckoutOptionsModel.fromJson(Map<String, dynamic>.from(res['data'] as Map? ?? res));
+    return CheckoutOptionsModel.fromJson(
+        Map<String, dynamic>.from(res['data'] as Map? ?? res));
   }
 
   Future<List<CouponModel>> coupons() async {

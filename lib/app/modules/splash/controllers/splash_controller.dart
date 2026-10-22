@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 
 import '../../../core/routes/app_routes.dart';
-import '../../../core/services/auth_service.dart';
-import '../../../core/storage/local_storage.dart';
 
 class SplashController extends GetxController {
   @override
@@ -13,15 +11,8 @@ class SplashController extends GetxController {
 
   Future<void> _boot() async {
     await Future<void>.delayed(const Duration(milliseconds: 1900));
-    final storage = Get.find<LocalStorage>();
-    final auth = Get.find<AuthService>();
-
-    if (storage.isFirstRun) {
-      Get.offAllNamed(AppRoutes.onboarding);
-      // Get.offAllNamed(AppRoutes.login);
-      return;
-    }
-    Get.offAllNamed(auth.isLoggedIn ? AppRoutes.main : AppRoutes.login);
-    // Get.offAllNamed(auth.isLoggedIn ? AppRoutes.main : AppRoutes.main);
+    // Always continue into the storefront. Guests can browse freely and
+    // are asked to sign in only when they try to order.
+    Get.offAllNamed(AppRoutes.main);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/base/base_controller.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/storage/local_storage.dart';
@@ -18,13 +19,29 @@ class ProfileController extends BaseController {
   final RxInt wishlistCount = 0.obs;
   final RxInt addressCount = 0.obs;
 
+  Worker? _authWorker;
+
   bool get isLoggedIn => _auth.isLoggedIn;
   UserModel? get user => _auth.user;
 
   @override
   void onInit() {
     super.onInit();
+    // Reload account data whenever the session changes (login / logout).
+    _authWorker = ever(_auth.userRx, (user) {
+      if (user == null) {
+        _reset();
+      } else {
+        fetch();
+      }
+    });
     if (isLoggedIn) fetch();
+  }
+
+  void _reset() {
+    recentOrders.clear();
+    wishlistCount.value = 0;
+    addressCount.value = 0;
   }
 
   Future<void> fetch() async {
@@ -51,7 +68,7 @@ class ProfileController extends BaseController {
   void openSettings() => Get.toNamed(AppRoutes.settings);
   void openNotifications() => Get.toNamed(AppRoutes.notifications);
   void openChat() => Get.toNamed(AppRoutes.chat);
-  void openLogin() => Get.toNamed(AppRoutes.login);
+  void openLogin() => AppNavigator.openAccount();
   void openRegister() => Get.toNamed(AppRoutes.register);
 
   Future<void> logout() async {
@@ -61,8 +78,12 @@ class ProfileController extends BaseController {
         title: const Text('ອອກຈາກລະບົບ'),
         content: const Text('ທ່ານຕ້ອງການອອກຈາກລະບົບແທ້ບໍ?'),
         actions: [
-          TextButton(onPressed: () => Get.back(result: false), child: const Text('ຍົກເລີກ')),
-          TextButton(onPressed: () => Get.back(result: true), child: const Text('ອອກ')),
+          TextButton(
+              onPressed: () => Get.back(result: false),
+              child: const Text('ຍົກເລີກ')),
+          TextButton(
+              onPressed: () => Get.back(result: true),
+              child: const Text('ອອກ')),
         ],
       ),
     );
@@ -70,6 +91,13 @@ class ProfileController extends BaseController {
     await _auth.logout();
     await Get.find<LocalStorage>().clearSession();
     AppSnackbar.success('ອອກຈາກລະບົບແລ້ວ');
-    Get.offAllNamed(AppRoutes.login);
+    // The shared account location now shows the login view again.
+    AppNavigator.openAccount();
+  }
+
+  @override
+  void onClose() {
+    _authWorker?.dispose();
+    super.onClose();
   }
 }

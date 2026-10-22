@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/base/base_controller.dart';
-import '../../../../core/routes/app_routes.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/utils/app_snackbar.dart';
@@ -33,7 +33,8 @@ class RegisterController extends BaseController {
           ));
       await Get.find<NotificationService>().load();
       AppSnackbar.success('ສ້າງບັນຊີສຳເລັດ 🎉');
-      Get.offAllNamed(AppRoutes.main);
+      // Registration replaces the login view with the profile view.
+      AppNavigator.openAccount();
     } catch (_) {
       AppSnackbar.error(error.value ?? 'ສະໝັກບໍ່ສຳເລັດ');
     }

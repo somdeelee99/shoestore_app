@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/base/base_controller.dart';
+import '../../../../core/routes/app_navigator.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/services/auth_service.dart';
 import '../../../../core/storage/local_storage.dart';
@@ -46,7 +47,8 @@ class SettingsController extends BaseController {
   void setLanguage(String value) {
     language.value = value;
     _storage.setLanguage(value);
-    AppSnackbar.info(value == 'lo' ? 'ປ່ຽນເປັນພາສາລາວແລ້ວ' : 'Language switched to English');
+    AppSnackbar.info(
+        value == 'lo' ? 'ປ່ຽນເປັນພາສາລາວແລ້ວ' : 'Language switched to English');
   }
 
   void openEditProfile() => Get.toNamed(AppRoutes.editProfile);
@@ -76,8 +78,12 @@ class SettingsController extends BaseController {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Get.back(result: false), child: const Text('ຍົກເລີກ')),
-          TextButton(onPressed: () => Get.back(result: true), child: const Text('ບັນທຶກ')),
+          TextButton(
+              onPressed: () => Get.back(result: false),
+              child: const Text('ຍົກເລີກ')),
+          TextButton(
+              onPressed: () => Get.back(result: true),
+              child: const Text('ບັນທຶກ')),
         ],
       ),
     );
@@ -97,12 +103,13 @@ class SettingsController extends BaseController {
   Future<void> logout() async {
     await _auth.logout();
     await _storage.clearSession();
-    Get.offAllNamed(AppRoutes.login);
+    AppNavigator.openAccount();
   }
 
   void about() => Get.dialog(
         AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
           title: const Text('ກ່ຽວກັບຮ້ານ'),
           content: const Text(
             'ShoeStore ຮ້ານຂາຍເກີບອອນລາຍ\nເວີຊັ່ນ 1.0.0\n\nໂທ: 020 5555 1234\nອີເມວ: support@shoestore.com',

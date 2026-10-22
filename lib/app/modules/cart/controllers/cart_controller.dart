@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../core/base/base_controller.dart';
+import '../../../core/routes/app_navigator.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/services/auth_service.dart';
 import '../../../core/services/checkout_service.dart';
@@ -22,7 +23,8 @@ class CartController extends BaseController {
 
   double get subtotal => cart.value?.subtotal ?? 0;
   double get shippingFee => subtotal > 0 ? (subtotal >= 500000 ? 0 : 30000) : 0;
-  double get total => (subtotal + shippingFee - discount.value).clamp(0, double.infinity);
+  double get total =>
+      (subtotal + shippingFee - discount.value).clamp(0, double.infinity);
 
   @override
   void onInit() {
@@ -64,7 +66,8 @@ class CartController extends BaseController {
   Future<void> applyCoupon(String code) async {
     if (code.trim().isEmpty) return;
     try {
-      final value = await _repository.validateCoupon(code.trim().toUpperCase(), subtotal);
+      final value =
+          await _repository.validateCoupon(code.trim().toUpperCase(), subtotal);
       if (value <= 0) {
         AppSnackbar.error('ຄູປອງນີ້ໃຊ້ບໍ່ໄດ້ກັບຄຳສັ່ງຊື້ນີ້');
         return;
@@ -84,10 +87,8 @@ class CartController extends BaseController {
 
   Future<void> checkout() async {
     if (items.isEmpty) return;
-    if (!isLoggedIn) {
-      Get.toNamed(AppRoutes.login);
-      return;
-    }
+    // Placing an order requires an account.
+    if (!AppNavigator.requireLogin()) return;
     final checkout = Get.find<CheckoutService>();
     checkout.start(items, fee: shippingFee);
     checkout.couponCode.value = couponCode.value ?? '';
