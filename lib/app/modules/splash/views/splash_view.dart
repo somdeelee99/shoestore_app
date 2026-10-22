@@ -62,15 +62,17 @@ class SplashView extends StatelessWidget {
                             offset: const Offset(0, 18)),
                       ],
                     ),
-                    child: Icon(Icons.directions_run_rounded,
-                        size: 56.r, color: AppColors.primary),
+                    child: Image.asset(
+                      'assets/logo/logo.png',
+                      fit: BoxFit.cover,
+                    ),
                   )
                       .animate()
                       .scale(duration: 700.ms, curve: Curves.easeOutBack)
                       .fadeIn(duration: 500.ms),
                   SizedBox(height: 24.h),
                   Text(
-                    'SHOE STORE',
+                    'KICKO STORE',
                     style: TextStyle(
                       fontSize: 26.sp,
                       fontWeight: FontWeight.w900,

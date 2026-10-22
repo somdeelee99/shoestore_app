@@ -26,23 +26,26 @@ class LoginView extends GetView<LoginController> {
               children: [
                 SizedBox(height: 22.h),
                 Center(
-                  child: Container(
-                    height: 74.r,
-                    width: 74.r,
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradient,
-                      borderRadius: BorderRadius.circular(22.r),
-                      boxShadow: [
-                        BoxShadow(
-                            color: AppColors.primary.withValues(alpha: .3),
-                            blurRadius: 24,
-                            offset: const Offset(0, 12)),
-                      ],
-                    ),
-                    child: Icon(Icons.directions_run_rounded,
-                        color: Colors.white, size: 42.r),
+                    child: Container(
+                  height: 74.r,
+                  width: 74.r,
+                  decoration: BoxDecoration(
+                    gradient: AppColors.primaryGradient,
+                    borderRadius: BorderRadius.circular(22.r),
+                    boxShadow: [
+                      BoxShadow(
+                          color: AppColors.primary.withValues(alpha: .3),
+                          blurRadius: 24,
+                          offset: const Offset(0, 12)),
+                    ],
                   ),
-                ),
+                  // child: Icon(Icons.directions_run_rounded,
+                  //     color: Colors.white, size: 42.r),
+                  child: Image.asset(
+                    'assets/logo/logo.png',
+                    fit: BoxFit.cover,
+                  ),
+                )),
                 SizedBox(height: 26.h),
                 Center(
                   child: Text(
@@ -182,7 +185,7 @@ class LoginView extends GetView<LoginController> {
                       children: [
                         TextSpan(
                           text: 'ສະໝັກສະມາຊິກ',
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w700),
                           recognizer: TapGestureRecognizer()
