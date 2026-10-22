@@ -28,7 +28,10 @@ class OrdersView extends GetView<OrdersController> {
             icon: Icons.lock_outline_rounded,
             title: 'ກະລຸນາເຂົ້າສູ່ລະບົບ',
             description: 'ເພື່ອເບິ່ງປະຫວັດການສັ່ງຊື້',
-            action: AppButton(label: 'ເຂົ້າສູ່ລະບົບ', expanded: false, onPressed: () => Get.toNamed(AppRoutes.login)),
+            action: AppButton(
+                label: 'ເຂົ້າສູ່ລະບົບ',
+                expanded: false,
+                onPressed: () => Get.toNamed(AppRoutes.login)),
           );
         }
 
@@ -53,8 +56,11 @@ class OrdersView extends GetView<OrdersController> {
                             tab['label']!,
                             style: TextStyle(
                               fontSize: 12.sp,
-                              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-                              color: selected ? AppColors.primary : AppColors.textSecondary,
+                              fontWeight:
+                                  selected ? FontWeight.w700 : FontWeight.w500,
+                              color: selected
+                                  ? AppColors.primary
+                                  : AppColors.textSecondary,
                             ),
                           ),
                           SizedBox(height: 6.h),
@@ -77,7 +83,11 @@ class OrdersView extends GetView<OrdersController> {
               child: controller.loading.value && controller.orders.isEmpty
                   ? Padding(
                       padding: EdgeInsets.all(16.w),
-                      child: Column(children: const [LoadingCard(), LoadingCard(), LoadingCard()]),
+                      child: Column(children: const [
+                        LoadingCard(),
+                        LoadingCard(),
+                        LoadingCard()
+                      ]),
                     )
                   : controller.orders.isEmpty
                       ? const EmptyState(
@@ -89,7 +99,8 @@ class OrdersView extends GetView<OrdersController> {
                           color: AppColors.primary,
                           onRefresh: controller.fetch,
                           child: ListView.builder(
-                            padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 100.h),
+                            padding:
+                                EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 100.h),
                             itemCount: controller.orders.length,
                             itemBuilder: (_, i) {
                               final order = controller.orders[i];
@@ -109,7 +120,9 @@ class OrdersView extends GetView<OrdersController> {
                                         children: [
                                           Text(
                                             '#${order.code}',
-                                            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w800),
+                                            style: TextStyle(
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w800),
                                           ),
                                           const Spacer(),
                                           StatusChip(status: order.status),
@@ -118,23 +131,31 @@ class OrdersView extends GetView<OrdersController> {
                                       SizedBox(height: 4.h),
                                       Row(
                                         children: [
-                                          const Icon(Icons.schedule_rounded, size: 12, color: AppColors.textHint),
+                                          const Icon(Icons.schedule_rounded,
+                                              size: 12,
+                                              color: AppColors.textHint),
                                           SizedBox(width: 4.w),
                                           Text(
-                                            Formatters.dateTime(order.createdAt),
-                                            style: TextStyle(fontSize: 10.5.sp, color: AppColors.textHint),
+                                            Formatters.dateTime(
+                                                order.createdAt),
+                                            style: TextStyle(
+                                                fontSize: 10.5.sp,
+                                                color: AppColors.textHint),
                                           ),
                                         ],
                                       ),
                                       Divider(height: 18.h),
                                       ...order.items.take(2).map(
                                             (item) => Padding(
-                                              padding: EdgeInsets.only(bottom: 8.h),
+                                              padding:
+                                                  EdgeInsets.only(bottom: 8.h),
                                               child: ProductTile(
                                                 image: item.image,
                                                 title: item.name,
-                                                subtitle: 'ຂະໜາດ ${item.size ?? '-'} · x${item.quantity}',
-                                                price: Formatters.money(item.price),
+                                                subtitle:
+                                                    'ຂະໜາດ ${item.size ?? '-'} · x${item.quantity}',
+                                                price: Formatters.money(
+                                                    item.price),
                                                 size: 48,
                                               ),
                                             ),
@@ -144,7 +165,9 @@ class OrdersView extends GetView<OrdersController> {
                                           alignment: Alignment.centerLeft,
                                           child: Text(
                                             '+ ອີກ ${order.items.length - 2} ລາຍການ',
-                                            style: TextStyle(fontSize: 10.5.sp, color: AppColors.textHint),
+                                            style: TextStyle(
+                                                fontSize: 10.5.sp,
+                                                color: AppColors.textHint),
                                           ),
                                         ),
                                       Divider(height: 18.h),
@@ -152,12 +175,16 @@ class OrdersView extends GetView<OrdersController> {
                                         children: [
                                           Text(
                                             '${order.totalQuantity} ລາຍການ',
-                                            style: TextStyle(fontSize: 11.sp, color: AppColors.textSecondary),
+                                            style: TextStyle(
+                                                fontSize: 11.sp,
+                                                color: AppColors.textSecondary),
                                           ),
                                           const Spacer(),
                                           Text(
                                             'ລວມ ',
-                                            style: TextStyle(fontSize: 11.sp, color: AppColors.textSecondary),
+                                            style: TextStyle(
+                                                fontSize: 11.sp,
+                                                color: AppColors.textSecondary),
                                           ),
                                           Text(
                                             Formatters.money(order.total),
@@ -178,15 +205,18 @@ class OrdersView extends GetView<OrdersController> {
                                                 label: 'ຍົກເລີກ',
                                                 outlined: true,
                                                 height: 40.h,
-                                                onPressed: () => controller.cancel(order),
+                                                onPressed: () =>
+                                                    controller.cancel(order),
                                               ),
                                             ),
-                                          if (order.canCancel) SizedBox(width: 8.w),
+                                          if (order.canCancel)
+                                            SizedBox(width: 8.w),
                                           Expanded(
                                             child: AppButton(
                                               label: 'ຕິດຕາມ',
                                               height: 40.h,
-                                              onPressed: () => controller.track(order),
+                                              onPressed: () =>
+                                                  controller.track(order),
                                             ),
                                           ),
                                         ],

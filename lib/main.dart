@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:shoestore_app/app/core/brinding/app_binding.dart';
 
 import 'app/core/network/api_client.dart';
 import 'app/core/routes/app_pages.dart';
@@ -19,7 +20,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+    const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark),
   );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -52,12 +55,15 @@ class ShoeStoreApp extends StatelessWidget {
         getPages: AppPages.routes,
         defaultTransition: Transition.cupertino,
         transitionDuration: const Duration(milliseconds: 280),
+        initialBinding: AppBinding(),
         locale: const Locale('lo', 'LA'),
         fallbackLocale: const Locale('en', 'US'),
         builder: (context, child) {
           // lock text scaling so the design stays stable
           final mq = MediaQuery.of(context);
-          return MediaQuery(data: mq.copyWith(textScaler: const TextScaler.linear(1.0)), child: child!);
+          return MediaQuery(
+              data: mq.copyWith(textScaler: const TextScaler.linear(1.0)),
+              child: child!);
         },
       ),
     );
