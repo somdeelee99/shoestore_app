@@ -74,9 +74,11 @@ class AuthService extends GetxService {
 
   Future<String> requestOtp(String phone) async {
     final res = await _repository.requestOtp(phone);
-    final data = res['data'];
-    if (data is Map && data['devCode'] != null)
-      return data['devCode'].toString();
+    // ApiClient usually unwraps the `{ data: ... }` envelope already, but
+    // support both shapes so the dev OTP stays available.
+    final raw = res['data'];
+    final data = raw is Map ? Map<String, dynamic>.from(raw) : res;
+    if (data['devCode'] != null) return data['devCode'].toString();
     return '';
   }
 

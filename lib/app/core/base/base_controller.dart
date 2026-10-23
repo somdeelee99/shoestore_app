@@ -10,7 +10,8 @@ abstract class BaseController extends GetxController {
   final RxnString error = RxnString();
   final RxnString message = RxnString();
 
-  Future<T?> guard<T>(Future<T> Function() task, {bool showLoading = true}) async {
+  Future<T?> guard<T>(Future<T> Function() task,
+      {bool showLoading = true}) async {
     if (showLoading) loading.value = true;
     error.value = null;
     try {
