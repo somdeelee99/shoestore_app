@@ -49,6 +49,7 @@ dependencies:
   # Push Notifications (optional)
   firebase_core: ^3.13.0
   firebase_messaging: ^15.2.5
+  flutter_local_notifications: ^22.3.2
 
   # Realtime Chat (optional)
   socket_io_client: ^3.1.2

@@ -1,0 +1,22 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "shoestore-d0e0a",
+                    "appId": "1:154195098031:android:042f53e15e5df16d7f575a",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "shoestore-d0e0a",
+                    "configurations": {
+                        "android": "1:154195098031:android:042f53e15e5df16d7f575a",
+                        "ios": "1:154195098031:ios:28ef9f1ade7ac7b07f575a"
+                    }
+                }
+            }
+        }
+    }
+}
